@@ -4,9 +4,11 @@ pwd
 
 mkdir mysql zoneminder backup conf
 
-mkdir -p conf/mysql && touch $_/my.cnf
+mkdir -p conf/mysql
 
-cat /conf/mysql/my.cnf <<EOF
+touch ./conf/mysql/my.cnf
+
+cat > ./conf/mysql/my.cnf <<EOF
 
 # For advice on how to change settings please see
 # http://dev.mysql.com/doc/refman/5.7/en/server-configuration-defaults.html
@@ -43,3 +45,6 @@ sql_mode = NO_ENGINE_SUBSTITUTION
 max_connections = 500
 
 EOF
+
+
+chmod 755 ./conf/mysql/my.cnf
