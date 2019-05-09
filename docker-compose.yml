@@ -4,7 +4,7 @@ services:
   db:
     image: "mysql/mysql-server:5.7"
     environment:
-      - TZ=America/Chicago
+      - TZ=America/Denver
       - MYSQL_USER=zmuser
       - MYSQL_PASSWORD=zmpass
       - MYSQL_DATABASE=zm
