@@ -1,15 +1,15 @@
 #name of container: docker-zoneminder
-#versison of container: 0.6.2
-FROM quantumobject/docker-baseimage:18.04
-LABEL maintainer="Angel Rodriguez <angel@quantumobject.com>"
+FROM quantumobject/docker-baseimage:16.04
 
-ENV TZ America/New_York
+ENV TZ America/Denver
 
 # Update the container
 # Installation of nesesary package/software for this containers...
-RUN echo "deb http://ppa.launchpad.net/iconnor/zoneminder-1.32/ubuntu `cat /etc/container_environment/DISTRIB_CODENAME` main" >> /etc/apt/sources.list  \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 776FFB04 \
-    && echo $TZ > /etc/timezone && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -q --no-install-recommends \
+RUN apt-get update
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:iconnor/zoneminder
+RUN echo $TZ > /etc/timezone
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q --no-install-recommends \
                                         libvlc-dev  \
                                         libvlccore-dev\
                                         libapache2-mod-perl2 \
@@ -23,6 +23,7 @@ RUN echo "deb http://ppa.launchpad.net/iconnor/zoneminder-1.32/ubuntu `cat /etc/
 					make \	
 					gcc \
 					build-essential \
+					wget \
                     && apt-get clean \
                     && rm -rf /tmp/* /var/tmp/*  \
                     && rm -rf /var/lib/apt/lists/*
@@ -31,7 +32,7 @@ RUN echo "deb http://ppa.launchpad.net/iconnor/zoneminder-1.32/ubuntu `cat /etc/
 RUN mkdir -p /etc/service/apache2  /var/log/apache2 ; sync 
 COPY apache2.sh /etc/service/apache2/run
 RUN chmod +x /etc/service/apache2/run \
-    && cp /var/log/cron/config /var/log/apache2/ \
+    #&& cp /var/log/cron/config /var/log/apache2/ \
     && chown -R www-data /var/log/apache2
 
 # to add zm deamon to runit
